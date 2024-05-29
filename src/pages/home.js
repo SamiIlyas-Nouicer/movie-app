@@ -1,76 +1,48 @@
-// pages/home.js
-import SignUp from './components/SignUp';
-import SignIn from './components/SignIn';
-import SignOut from './components/SignOut';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from './firebase/firebase'; // Adjust the import path according to your project structure
-import { Find_Movie } from './api/Imdb'; // Adjust the import path according to your project structure
-import { useEffect, useState } from 'react';
-import  NavBar  from './components/NavBar';
+import { useEffect, useState } from "react";
+import NavBar from "./components/NavBar";
 
 const Home = () => {
-  const [user] = useAuthState(auth);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [movie, setMovie] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [queryResponse, setQueryResponse] = useState({});
   const [error, setError] = useState(null);
-
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    setError(null); // Reset error state before new search
-    setMovie(null); // Reset movie state before new search
-
-    try {
-      const foundMovie = await Find_Movie(searchQuery);
-      setMovie(foundMovie);
-      console.log('Movie found:', foundMovie);
-    } catch (error) {
-      setError(error.message);
-      console.error('Error finding movie:', error.message);
-    }
-  };
+  const [movies, setMovies] = useState([]);
+  const [actors, setActors] = useState(null);
+  const [directors, setDirectors] = useState(null);
 
   useEffect(() => {
-    console.log('Movie changed:', movie);
-  }, [movie]);
+    console.log("query response changed:", queryResponse);
+    setMovies(queryResponse);
+  }, [queryResponse]);
 
-  useEffect(() => {
-    console.log('Search query changed:', searchQuery);
-  }, [searchQuery]);
-
-  console.log(user);
   return (
-    <div className='flex flex-col '>
-      <NavBar /> 
-      {!user ? (
-        <>
-          <SignUp />
-          <SignIn />
-        </>
-      ) : (
-        <>
-          <p>Welcome, {user.displayName}</p>
-          <SignOut />
-        </>
-      )}
-
-      <input
-        type="text"
-        placeholder="Search for a movie"
-        onChange={(e) => setSearchQuery(e.target.value)}
+    <div className="flex flex-col w-full h-full bg-peach-orange-200">
+      <NavBar
+        queryResponse={queryResponse}
+        setQueryResponse={setQueryResponse}
       />
-      <button onClick={handleSearch}>Search</button>
+      <div className="h-full">
+        {movies.length > 0
+          ? movies?.map((movie) => (
+              <div key={movie.infos.imdb_id} className="flex p-2 ">
+                <div className="w-1/12 p-5 ">
+                  {" "}
+                  <img className="object-cover rounded" src={movie.image}></img>
+                </div>
+                <div className="flex flex-col w-8/12 p-5 text-">
+                  <div className="mb-3">
+                    {movie.infos.title} {movie.infos.release_date}
+                  </div>
+                  <div className="mb-5">{movie.infos.description}</div>
 
-      {error && <p>Error: {error}</p>}
-      {movie && <div>{ (
-          <ul>
-            {movie.titleResults.results.map((movies, index) => (
-              <li key={index}>{movies.titleNameText}</li>
-            ))}
-          </ul>
-        )
-      
-        }
-        </div>        }
+                  <div>
+                    Directed By{" "}
+                    {movie.infos.directors ? movie.infos.directors[0] : null}
+                  </div>
+                </div>
+              </div>
+            ))
+          : null}
+      </div>
     </div>
   );
 };

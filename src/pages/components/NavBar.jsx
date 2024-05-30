@@ -18,31 +18,35 @@ const NavBar = ({ queryResponse, setQueryResponse }) => {
           const movies = await Promise.all(
             movieId.map(async (movie) => {
               const infos = await Find_Imdb_By_Id(movie.id);
-              return { infos, image: movie.image };
+              console.log("Fetched movie info:", infos); // Log the fetched data
+              return { infos };
             })
           );
-          console.log("Fetched movies: ", movies);
+          console.log("Fetched movies array:", movies); // Log the array of fetched movies
           setQueryResponse(movies);
         } catch (error) {
-          console.error("Error fetching movies: ", error);
+          console.error("Error fetching movies:", error);
           setError(error.message);
         }
       };
       fetchMovies();
     }
-  }, [movieId, setQueryResponse]);
+  }, [movieId, setQueryResponse, setError]);
 
   const handleSearch = async (e) => {
     e.preventDefault();
     setError(null); // Reset error state before new search
 
     try {
+      console.log("Searching for:", searchQuery);
+
       const response = await Find_Imdb(searchQuery);
-      const Id = response.titleResults.results.map((movie) => ({
+      console.log("Response from API:", response);
+      const Id = response.results.map((movie) => ({
         id: movie.id,
-        image: movie.titlePosterImageModel.url, // Adjusted to access the correct property
       }));
       setMovieId(Id);
+      console.log("Movie Ids:", Id);
       // setQueryResponse(response);
       setSearchQuery("");
     } catch (error) {
@@ -51,14 +55,14 @@ const NavBar = ({ queryResponse, setQueryResponse }) => {
   };
 
   return (
-    <nav className="bg-woody-brown-950 p-4">
+    <nav className="bg-blue-dianne-900 p-4 text-derby-100">
       <div className="flex justify-between items-center">
-        <div className="text-peach-orange-200 text-xl font-bold">MovieWise</div>
+        <div className=" text-xl font-bold">MovieWise</div>
         <div className="hidden md:block">
           <div className="relative flex items-center">
             <FontAwesomeIcon
               icon={faSearch}
-              className="absolute left-3 hover:text-white  cursor-pointer  hover:rounded-full hover:p-1 hover:bg-peach-orange-300"
+              className="absolute left-3 text-spicy-mix-700   hover:text-spicy-mix-700  cursor-pointer  hover:rounded-full hover:p-1 hover:bg-peach-orange-300 transition duration-300"
               onClick={handleSearch}
             />
             <input

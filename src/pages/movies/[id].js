@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 import { Find_Imdb_By_Id } from "../api/Imdb"; // Adjust the import to your actual data fetching function
 import NavBar from "@/components/NavBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faUser, faClock } from "@fortawesome/free-solid-svg-icons";
 import Cast from "./components/Cast";
 import Crew from "./components/Crew";
 import Details from "./components/Details";
 import Release from "./components/Release";
+import RatingStars from "./components/RatingStars";
 
 const MovieDetail = () => {
   const router = useRouter();
@@ -97,7 +98,16 @@ const MovieDetail = () => {
             {component === "RELEASE" && <Release movie={movie} />}
           </div>
         </div>
-        <div className="w-1/3"></div>
+        <div className="w-1/3 border border-red-700 flex justify-center items-center">
+          <div className="p-1 border border-red-700 w-2/3 h-3/5 rounded-lg">
+            <div className="  w-full h-1/5 ">
+              <RatingStars totalStars={5} className="" />
+            </div>
+            <div className="border border-red-700 text-4xl w-full h-1/5 flex justify-around items-center">
+              <FontAwesomeIcon icon={faClock} /> Add to Watchlist
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

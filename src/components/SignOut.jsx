@@ -1,6 +1,8 @@
 // components/SignOut.js
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 const SignOut = () => {
   const handleSignOut = async () => {
@@ -12,7 +14,11 @@ const SignOut = () => {
     }
   };
 
-  return <button onClick={handleSignOut}>Sign Out</button>;
+  return (
+    <button onClick={handleSignOut}>
+      <FontAwesomeIcon icon={faRightFromBracket} />
+    </button>
+  );
 };
 
 export default SignOut;

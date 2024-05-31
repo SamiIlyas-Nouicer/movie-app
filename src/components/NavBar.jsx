@@ -58,22 +58,26 @@ const NavBar = ({ queryResponse, setQueryResponse }) => {
   return (
     <nav className="bg-blue-dianne-900 p-4 text-derby-100">
       <div className="flex justify-between items-center">
-        <div className=" text-xl font-bold">MovieWise</div>
-        <div className="hidden md:block">
-          <div className="relative flex items-center">
-            <FontAwesomeIcon
-              icon={faSearch}
-              className="absolute left-3 text-spicy-mix-700   hover:text-spicy-mix-700  cursor-pointer  hover:rounded-full hover:p-1 hover:bg-peach-orange-300 transition duration-300"
-              onClick={handleSearch}
-            />
-            <input
-              type="text"
-              placeholder="search"
-              className="pl-5 pr-2 py-1 text-center rounded border border-gray-300 text-spicy-mix-700"
-              onChange={(e) => setSearchQuery(e.target.value)}
-              value={searchQuery}
-            />
-          </div>{" "}
+        <div className=" text-xl font-bold">
+          Movi<span className="text-derby-700">Wise</span>
+        </div>
+        <div className="flex gap-4">
+          <div className=" hidden md:block">
+            <div className="relative flex items-center">
+              <FontAwesomeIcon
+                icon={faSearch}
+                className="absolute left-3 text-spicy-mix-700   hover:text-spicy-mix-700  cursor-pointer  hover:rounded-full hover:p-1 hover:bg-peach-orange-300 transition duration-300"
+                onClick={handleSearch}
+              />
+              <input
+                type="text"
+                placeholder="search"
+                className="pl-5 pr-2 py-1 text-center rounded border border-gray-300 text-spicy-mix-700"
+                onChange={(e) => setSearchQuery(e.target.value)}
+                value={searchQuery}
+              />
+            </div>{" "}
+          </div>
           <SignOut />
         </div>
         <div className="md:hidden">

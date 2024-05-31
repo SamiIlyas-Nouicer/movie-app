@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { Find_Imdb } from "../api/Imdb"; // Adjust the import path according to your project structure
-import { Find_Imdb_By_Id } from "../api/Imdb";
+import { Find_Imdb } from "../pages/api/Imdb"; // Adjust the import path according to your project structure
+import { Find_Imdb_By_Id } from "../pages/api/Imdb";
 import { useEffect } from "react";
+import SignOut from "./SignOut";
 
 const NavBar = ({ queryResponse, setQueryResponse }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -73,6 +74,7 @@ const NavBar = ({ queryResponse, setQueryResponse }) => {
               value={searchQuery}
             />
           </div>{" "}
+          <SignOut />
         </div>
         <div className="md:hidden">
           <button

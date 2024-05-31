@@ -1,31 +1,31 @@
+// components/SignUp.js
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 import poster from "./assets/posters.jpg";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
-import { useRouter } from "next/router";
-
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/router";
 
-const SignIn = () => {
+const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter(); // Initialize the useRouter hook
 
-  const handleSignIn = async (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      const userCredential = await signInWithEmailAndPassword(
+      const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-      console.log("User signed in:", userCredential.user);
+      console.log("User signed up:", userCredential.user);
       router.push("/home");
     } catch (error) {
-      console.error("Error signing in:", error.message);
+      console.error("Error signing up:", error.message);
     }
   };
 
@@ -40,7 +40,7 @@ const SignIn = () => {
           />
         </div>
         <form
-          onSubmit={handleSignIn}
+          onSubmit={handleSignUp}
           className="flex flex-col h-full w-full justify-center items-center relative"
         >
           <h1 className="text-2xl text-center absolute top-20 font-bold">
@@ -78,13 +78,10 @@ const SignIn = () => {
             type="submit"
             className="p-4 w-2/3 border rounded-full bg-blue-dianne-700 text-white hover:bg-blue-dianne-900 transition duration-300 ease-in-out m-2"
           >
-            Sign In
+            Sign Up
           </button>
-          <a
-            className="absolute bottom-5 cursor-pointer font-semibold"
-            onClick={() => router.push("/SignUp")}
-          >
-            Create an account ?
+          <a className="absolute bottom-5 cursor-pointer font-semibold">
+            Already have an account ?
           </a>
         </form>
       </div>
@@ -92,4 +89,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;

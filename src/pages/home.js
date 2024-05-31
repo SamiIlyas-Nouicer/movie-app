@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { useRouter } from "next/router";
 
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -9,6 +10,11 @@ const Home = () => {
   const [movies, setMovies] = useState([]);
   const [actors, setActors] = useState(null);
   const [directors, setDirectors] = useState(null);
+  const router = useRouter();
+
+  const handleMovieClick = (id) => {
+    router.push(`/movies/${id}`);
+  };
 
   useEffect(() => {
     console.log("query response changed:", queryResponse);
@@ -28,6 +34,7 @@ const Home = () => {
                 .filter((movie) => movie.infos) // Filter out movies with undefined infos
                 .map((movie) => (
                   <div
+                    onClick={() => handleMovieClick(movie.infos.id)}
                     key={movie.infos.id}
                     className="flex p-3 relative w-8/12 border rounded m-2 border-derby-100 border-1 text-black shadow-lg bg-cascade-1 hover:transform hover:scale-105 transition duration-300 cursor-pointer"
                   >

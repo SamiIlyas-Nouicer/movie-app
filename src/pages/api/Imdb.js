@@ -12,7 +12,7 @@ export const Find_Imdb = async (query) => {
     url: "https://imdb-api12.p.rapidapi.com/search",
     params: { query: query },
     headers: {
-      "X-RapidAPI-Key": "dca37a194fmshc1fbefaa4f6eb0fp1a260ajsncefa9bc1d6cd",
+      "X-RapidAPI-Key": "376b40d5b4msh7e9a0d42b036231p1a53e4jsn6cefc8e09280",
       "X-RapidAPI-Host": "imdb-api12.p.rapidapi.com",
     },
   };
@@ -38,7 +38,7 @@ export const Find_Imdb_By_Id = async (id) => {
     method: "GET",
     url: `https://imdb-api12.p.rapidapi.com/title/${id}`,
     headers: {
-      "X-RapidAPI-Key": "dca37a194fmshc1fbefaa4f6eb0fp1a260ajsncefa9bc1d6cd",
+      "X-RapidAPI-Key": "376b40d5b4msh7e9a0d42b036231p1a53e4jsn6cefc8e09280",
       "X-RapidAPI-Host": "imdb-api12.p.rapidapi.com",
     },
   };

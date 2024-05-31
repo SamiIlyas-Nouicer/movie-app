@@ -5,13 +5,14 @@ import { Find_Imdb } from "../pages/api/Imdb"; // Adjust the import path accordi
 import { Find_Imdb_By_Id } from "../pages/api/Imdb";
 import { useEffect } from "react";
 import SignOut from "./SignOut";
+import { useRouter } from "next/router";
 
 const NavBar = ({ queryResponse, setQueryResponse }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [error, setError] = useState(null);
   const [movieId, setMovieId] = useState([]);
-
+  const router = useRouter();
   useEffect(() => {
     if (movieId.length > 0) {
       const fetchMovies = async () => {
@@ -23,6 +24,7 @@ const NavBar = ({ queryResponse, setQueryResponse }) => {
               return { infos };
             })
           );
+          router.push("/home");
           console.log("Fetched movies array:", movies); // Log the array of fetched movies
           setQueryResponse(movies);
         } catch (error) {
@@ -56,9 +58,12 @@ const NavBar = ({ queryResponse, setQueryResponse }) => {
   };
 
   return (
-    <nav className="bg-blue-dianne-900 p-4 text-derby-100">
+    <nav className=" w-full bg-blue-dianne-900 p-4 text-derby-100">
       <div className="flex justify-between items-center">
-        <div className=" text-xl font-bold">
+        <div
+          className=" text-xl font-bold cursor-pointer "
+          onClick={() => router.push("/home")}
+        >
           Movi<span className="text-derby-700">Wise</span>
         </div>
         <div className="flex gap-4">

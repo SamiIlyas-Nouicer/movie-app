@@ -68,7 +68,7 @@ const NavBar = ({ queryResponse, setQueryResponse }) => {
             <input
               type="text"
               placeholder="search"
-              className="pl-5 pr-2 py-1 text-center rounded border border-gray-300"
+              className="pl-5 pr-2 py-1 text-center rounded border border-gray-300 text-spicy-mix-700"
               onChange={(e) => setSearchQuery(e.target.value)}
               value={searchQuery}
             />

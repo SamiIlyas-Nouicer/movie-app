@@ -15,7 +15,7 @@ const Home = () => {
   }, [queryResponse]);
 
   return (
-    <div className="flex flex-col w-full h-full bg-derby-100">
+    <div className="flex flex-col w-full h-screen bg-derby-100">
       <NavBar
         queryResponse={queryResponse}
         setQueryResponse={setQueryResponse}

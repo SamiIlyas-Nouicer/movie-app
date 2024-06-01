@@ -4,7 +4,19 @@ import { useEffect, useState } from "react";
 import { Find_Imdb_By_Id } from "../api/Imdb"; // Adjust the import to your actual data fetching function
 import NavBar from "@/components/NavBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faUser, faClock } from "@fortawesome/free-solid-svg-icons";
+import { updateWatched, updateWatchList } from "../../firebase/update.js"; // Adjust the import to your actual function
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../../firebase/firebase";
+
+import {
+  faStar,
+  faUser,
+  faClock,
+  faEye,
+} from "@fortawesome/free-solid-svg-icons";
+import { faClock as faClockRegular } from "@fortawesome/free-regular-svg-icons";
+import { faEye as faEyeRegular } from "@fortawesome/free-regular-svg-icons";
+
 import Cast from "./components/Cast";
 import Crew from "./components/Crew";
 import Details from "./components/Details";
@@ -16,6 +28,43 @@ const MovieDetail = () => {
   const { id } = router.query;
   const [movie, setMovie] = useState(null);
   const [component, setComponent] = useState("CAST");
+  const [watched, setWatched] = useState(false);
+  const [watchlist, setWatchlist] = useState(false);
+
+  const [userEmail, setUserEmail] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserEmail(user.email);
+        console.log(`User email: ${user.email}`);
+      } else {
+        console.log("No user is signed in.");
+      }
+    });
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, []);
+
+  const handleWatched = () => {
+    setWatched(!watched);
+    if (!watched) {
+      updateWatched(userEmail, id, "add");
+      setWatchlist(false);
+    } else {
+      updateWatched(userEmail, id, "delete");
+    }
+  };
+
+  const handleWatchList = () => {
+    setWatchlist(!watchlist);
+    if (!watchlist) {
+      updateWatchList(userEmail, id, "add");
+    } else {
+      updateWatchList(userEmail, id, "delete");
+    }
+  };
 
   useEffect(() => {
     if (id) {
@@ -103,8 +152,26 @@ const MovieDetail = () => {
             <div className="  w-full h-1/5 ">
               <RatingStars totalStars={5} className="" />
             </div>
-            <div className="border border-red-700 text-4xl w-full h-1/5 flex justify-around items-center">
-              <FontAwesomeIcon icon={faClock} /> Add to Watchlist
+            <div className="border text-4xl w-full h-1/5 flex justify-around items-center cursor-pointer ">
+              {watchlist ? (
+                <FontAwesomeIcon
+                  icon={faClock}
+                  onClick={() => handleWatchList()}
+                />
+              ) : (
+                <FontAwesomeIcon
+                  icon={faClockRegular}
+                  onClick={() => handleWatchList()}
+                />
+              )}{" "}
+              {watched ? (
+                <FontAwesomeIcon icon={faEye} onClick={() => handleWatched()} />
+              ) : (
+                <FontAwesomeIcon
+                  icon={faEyeRegular}
+                  onClick={() => handleWatched()}
+                />
+              )}
             </div>
           </div>
         </div>

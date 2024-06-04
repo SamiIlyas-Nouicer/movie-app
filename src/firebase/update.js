@@ -11,19 +11,19 @@ import {
 } from "firebase/firestore";
 import { useState } from "react";
 
-export const updateWatched = async (email, idMovie, option) => {
+export const updateWatched = async (Email, idMovie, option) => {
   try {
     console.log(
-      `Starting updateWatchlist with email: ${email}, idMovie: ${idMovie}, option: ${option}`
+      `Starting updateWatchlist with Email: ${Email}, idMovie: ${idMovie}, option: ${option}`
     );
 
-    // Query the collection for the document with the specified email
-    const q = query(collection(db, "Users"), where("email", "==", email));
+    // Query the collection for the document with the specified Email
+    const q = query(collection(db, "Users"), where("Email", "==", Email));
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
       console.log(
-        `Found ${querySnapshot.size} document(s) with the specified email`
+        `Found ${querySnapshot.size} document(s) with the specified Email`
       );
       querySnapshot.forEach(async (document) => {
         // Get the document ID
@@ -38,27 +38,35 @@ export const updateWatched = async (email, idMovie, option) => {
           docData.WatchList.includes(idMovie)
         ) {
           console.log(
-            `Movie ID: ${idMovie} is in WatchList, adding to watchedMovies and removing from WatchList`
+            `Movie ID: ${idMovie} is in WatchList, adding to WatchedMovies and removing from WatchList`
           );
 
-          // Add the movie ID to the watchedMovies array and remove from WatchList
+          // Add the movie ID to the WatchedMovies array and remove from WatchList
           await updateDoc(doc(db, "Users", docId), {
-            watchedMovies: arrayUnion(idMovie),
+            WatchedMovies: arrayUnion(idMovie),
             WatchList: arrayRemove(idMovie),
             updatedAt: new Date(),
           });
           console.log(
-            `Movie ID: ${idMovie} added to watchedMovies and removed from WatchList`
+            `Movie ID: ${idMovie} added to WatchedMovies and removed from WatchList`
           );
-        } else if (option === "delete") {
-          console.log(`Removing movie ID: ${idMovie} from watchedMovies`);
-
-          // Remove the movie ID from the watchedMovies array if it exists
+        } else if (option === "add") {
+          console.log(`Adding movie ID: ${idMovie} to WatchedMovies`);
           await updateDoc(doc(db, "Users", docId), {
-            watchedMovies: arrayRemove(idMovie),
+            WatchedMovies: arrayUnion(idMovie),
+            WatchList: arrayRemove(idMovie),
             updatedAt: new Date(),
           });
-          console.log(`Movie ID: ${idMovie} removed from watchedMovies`);
+          console.log(`Movie ID: ${idMovie} added to WatchedMovies `);
+        } else if (option === "delete") {
+          console.log(`Removing movie ID: ${idMovie} from WatchedMovies`);
+
+          // Remove the movie ID from the WatchedMovies array if it exists
+          await updateDoc(doc(db, "Users", docId), {
+            WatchedMovies: arrayRemove(idMovie),
+            updatedAt: new Date(),
+          });
+          console.log(`Movie ID: ${idMovie} removed from WatchedMovies`);
         }
 
         // Update local state if needed
@@ -67,26 +75,26 @@ export const updateWatched = async (email, idMovie, option) => {
         // setWatchlist(option === "add");
       });
     } else {
-      console.log("No document found with the specified email");
+      console.log("No document found with the specified Email");
     }
   } catch (e) {
     console.error("Error updating document: ", e);
   }
 };
 
-export const updateWatchList = async (email, idMovie, option) => {
+export const updateWatchList = async (Email, idMovie, option) => {
   try {
     console.log(
-      `Starting updateWatchlist with email: ${email}, idMovie: ${idMovie}, option: ${option}`
+      `Starting updateWatchlist with Email: ${Email}, idMovie: ${idMovie}, option: ${option}`
     );
 
-    // Query the collection for the document with the specified email
-    const q = query(collection(db, "Users"), where("email", "==", email));
+    // Query the collection for the document with the specified Email
+    const q = query(collection(db, "Users"), where("Email", "==", Email));
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
       console.log(
-        `Found ${querySnapshot.size} document(s) with the specified email`
+        `Found ${querySnapshot.size} document(s) with the specified Email`
       );
       querySnapshot.forEach(async (document) => {
         // Get the document ID
@@ -115,7 +123,7 @@ export const updateWatchList = async (email, idMovie, option) => {
         // Update local state if needed
       });
     } else {
-      console.log("No document found with the specified email");
+      console.log("No document found with the specified Email");
     }
   } catch (e) {
     console.error("Error updating document: ", e);

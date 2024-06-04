@@ -53,3 +53,22 @@ export const Find_Imdb_By_Id = async (id) => {
     console.error("Error during request:", error);
   }
 };
+
+export const Get_Week_Top10 = async () => {
+  const options = {
+    method: "GET",
+    url: "https://imdb188.p.rapidapi.com/api/v1/getWeekTop10",
+    headers: {
+      "X-RapidAPI-Key": "376b40d5b4msh7e9a0d42b036231p1a53e4jsn6cefc8e09280",
+      "X-RapidAPI-Host": "imdb188.p.rapidapi.com",
+    },
+  };
+  console.log("Request options prepared:", options);
+
+  try {
+    const response = await axios.request(options);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
